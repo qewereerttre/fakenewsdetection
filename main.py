@@ -76,7 +76,6 @@ ps = PorterStemmer()
 
 model = pickle.load(open('model.pkl', 'rb'))
 tfidfvect = pickle.load(open('tfidfvect.pkl', 'rb'))
-cosmodel = pickle.load(open('cossmodel.pkl', 'rb'))
 
 @app.route('/', methods=['GET'])
 def home():
@@ -112,18 +111,9 @@ def predict(text):
     Av_random=np.average(test_df['Random_prob'])
     Av_random
 
-    embedding1 = cosmodel.encode(summary_lt, convert_to_tensor=True)
-    embedding2 = cosmodel.encode(text, convert_to_tensor=True)
-    cosine_scores = util.cos_sim(embedding1, embedding2)
-
-    def Average(cosine_scores):
-        return sum(cosine_scores) / len(cosine_scores)
-
-    average = Average(cosine_scores)
-    average
 
 
-    prediction = 'Prediction of this news 📰 is REAL 🧐 ' if ((Av_random) >=0.5 and average >= 0.5) else 'Prediction for this  news 📰 is FAKE 🧐'
+    prediction = 'Prediction of this news 📰 is REAL 🧐 ' if ((Av_random) >=0.5) else 'Prediction for this  news 📰 is FAKE 🧐'
     return prediction
 
 
